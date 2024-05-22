@@ -1,0 +1,54 @@
+import logging as logger
+import unittest
+class Add:
+    def add(self,number):
+        try:
+            list_of_number =[]
+            current_str=""
+            for i in range(len(number)):
+                if number[i].isnumeric() :
+                    if i-1>=0 and number[i-1]=="-":
+                        raise Exception("Negative numbers are not allowed")
+                    else:
+                        current_str+= number[i]
+                else:
+                    if current_str:
+                        list_of_number.append(int(current_str))
+                        current_str=""
+            if current_str:
+                list_of_number.append(int(current_str))
+            return sum(list_of_number)
+        except Exception as e :
+            logger.error(f"Negative Value not allowed Input :: {number}")
+            return str(e)
+
+
+
+class Test(unittest.TestCase):
+    def test_add(self):
+        self.obj=Add()
+        self.assertEqual(self.obj.add("") ,0)
+
+    def test_negative(self):
+        self.obj=Add()
+        self.assertEqual(self.obj.add("-1,5"), "Negative numbers are not allowed")
+
+    def test_special_delimiter(self):
+        self.obj = Add()
+        self.assertEqual(self.obj.add("1"),1)
+        self.assertEqual(self.obj.add("//;\n1;2"),3)
+        self.assertEqual(self.obj.add("1\n2,3") ,6)
+        self.assertEqual(self.obj.add("1;23") ,24)
+
+
+
+
+# obj=Add()
+# print(obj.add(""))
+# print(obj.add("-1,5"))
+# print(obj.add("1"))
+# print(obj.add("//;\n1;2"))
+# print(obj.add("1\n2,3"))
+# print(obj.add("1;23"))
+
+
